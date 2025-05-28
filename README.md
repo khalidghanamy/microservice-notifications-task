@@ -54,6 +54,7 @@ curl http://localhost:3001/notifications/logs
 - `timestamp`: For time-based sorting
 
 ## 🔄 Development Workflow
+![1748444956193](image/README/1748444956193.png)
 
 ### Development with Hot Reload
 
