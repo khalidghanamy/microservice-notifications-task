@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [
     NotificationModule,
     MongooseModule.forRoot(
-      process.env.MONGODB_URI || 'mongodb://localhost:27017/notification-service1?authSource=admin',
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/notification-service?authSource=admin',
       {
         
         retryAttempts: 5,

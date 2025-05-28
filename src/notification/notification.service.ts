@@ -38,11 +38,11 @@ export class NotificationService {
       email: userData.email,
       username: userData.username,
     };
-    await this.createNotification(notificationData);
-    await this.sendNotification(notificationData);
+    const notification = await this.createNotification(notificationData);
+    await this.sendNotification(notificationData,notification._doc._id);
   }
 
-  private async sendNotification(notificationData: NotificationData): Promise<void> {
+  private async sendNotification(notificationData: NotificationData,notificationId): Promise<void> {
     try {
       //Log the notification
       this.logger.log(`Sending notification to ${notificationData.email}...`);
@@ -55,7 +55,7 @@ export class NotificationService {
       this.logger.log(`✅ Welcome notification sent successfully to ${notificationData.email}`);
 
       // update the notification status to 'sent'
-      // await this.updateNotificationStatus(notificationId, 'sent');
+      await this.updateNotificationStatus(notificationId, 'sent');
     } catch (error) {
       this.logger.error(`Failed to send notification to ${notificationData.email}`, error);
       throw error;
@@ -63,19 +63,6 @@ export class NotificationService {
   }
 
 
-  // add error handling and retry
-  async handleError(error: any): Promise<void> {
-    this.logger.error('Error occurred while sending notification:', error);
-    // Implement retry logic or error handling as needed
-  };
-  async retryNotification(notificationData: NotificationData): Promise<void> {
-    try {
-      await this.sendNotification(notificationData);
-    } catch (error) {
-      this.logger.error('Retry failed for notification:', error);
-      throw error; // Re-throw the error after logging
-    }
-  };
   async getNotificationById(id: string): Promise<Notification | null> {
     return this.notificationModel.findById(id).exec();
   };

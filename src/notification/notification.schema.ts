@@ -16,17 +16,9 @@ export class Notification {
     @Prop({ required: true })
     username: string;
 
-    @Prop({ required: true, enum: ['email', 'sms', 'push', 'in-app'] })
-    type: string;
-
-    @Prop({ required: true })
-    message: string;
 
     @Prop({ default: 'pending', enum: ['pending', 'sent', 'failed', 'delivered'] })
     status: string;
-
-    @Prop({ default: 0 })
-    retryAttempts: number;
     
     @Prop({ default: Date.now })
     timestamp: Date;
