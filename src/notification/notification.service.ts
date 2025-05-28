@@ -39,10 +39,10 @@ export class NotificationService {
       username: userData.username,
     };
     const notification = await this.createNotification(notificationData);
-    await this.sendNotification(notificationData,notification._doc._id);
+    await this.sendNotification(notificationData);
   }
 
-  private async sendNotification(notificationData: NotificationData,notificationId): Promise<void> {
+  private async sendNotification(notificationData: NotificationData): Promise<void> {
     try {
       //Log the notification
       this.logger.log(`Sending notification to ${notificationData.email}...`);
@@ -55,7 +55,7 @@ export class NotificationService {
       this.logger.log(`✅ Welcome notification sent successfully to ${notificationData.email}`);
 
       // update the notification status to 'sent'
-      await this.updateNotificationStatus(notificationId, 'sent');
+      // await this.updateNotificationStatus(notificationId, 'sent');
     } catch (error) {
       this.logger.error(`Failed to send notification to ${notificationData.email}`, error);
       throw error;
