@@ -1,25 +1,25 @@
 import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
 
-import { MessagePattern, EventPattern, Payload } from '@nestjs/microservices';
-import { NotificationService, UserRegisteredEvent } from './notification.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { NotificationService } from './notification.service';
+import { NotificationType } from './enums/notification-type.enum';
+import { UserRegisteredDto } from './dto/user-registered.dto';
 
-@Controller("notifications")
+@Controller('notifications')
 export class NotificationController {
-  constructor(
-    private readonly notificationService: NotificationService,
-  ) { }
+  constructor(private readonly notificationService: NotificationService) {}
 
   @Get('logs')
   async getLogs() {
     return this.notificationService.findAllNotifications();
-  };
-
-  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-  @EventPattern('userRegistered')
-  async handleUserRegistered(@Payload() data: CreateNotificationDto) {
-    console.log('🎉Received userRegistered event:', data);
-    await this.notificationService.handleUserRegistered(data);
   }
 
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  @EventPattern(NotificationType.UserRegistered)
+  async handleUserRegistered(@Payload() data: UserRegisteredDto) {
+    await this.notificationService.handleNotification(
+      NotificationType.UserRegistered,
+      data,
+    );
+  }
 }
